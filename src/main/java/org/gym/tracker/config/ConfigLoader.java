@@ -28,11 +28,4 @@ public final class ConfigLoader {
             .filename(envFile.getName())
             .load();
     }
-
-    public static void main(String[] args) throws FileNotFoundException {
-        System.out.println(System.getProperty("ENV_LOCATION"));
-        System.setProperty("ENV_LOCATION", System.getProperty("user.dir") + "/fake/dir/env.testloader");
-        System.out.println(System.getProperty("ENV_LOCATION"));
-        getDotEnv();
-    }
 }
