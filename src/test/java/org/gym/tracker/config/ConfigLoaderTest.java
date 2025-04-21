@@ -10,13 +10,13 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class ConfigLoaderTest {
 
     @Test
-    void getConfig_NoEnvFile_Exception() {
+    void givenWrongEnvPath_WhenEnvRetrieved_ThenDotEnvException() {
         System.setProperty("ENV_LOCATION", System.getProperty("user.dir") + "/incorrect/path");
         assertThrows(DotenvException.class, ConfigLoader::getDotEnv);
     }
 
     @Test
-    void getConfig_ReadEnvFile_DotEnvConfig() {
+    void givenCorrectEnvPath_WhenEnvRetrieved_ThenEnvValAccess() {
         System.setProperty("ENV_LOCATION", System.getProperty("user.dir") + "/src/test/resources/.env.test");
         Dotenv testConfig = ConfigLoader.getDotEnv();
         assertEquals(testConfig.get("TEST_KEY"), "1,2,3");

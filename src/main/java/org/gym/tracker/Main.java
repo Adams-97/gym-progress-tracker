@@ -1,4 +1,4 @@
-package org.project;
+package org.gym.tracker;
 
 public class Main {
     public static void main(String[] args) {
