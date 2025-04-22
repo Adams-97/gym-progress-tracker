@@ -2,15 +2,17 @@ package org.gym.tracker.config;
 
 import io.github.cdimascio.dotenv.Dotenv;
 import io.github.cdimascio.dotenv.DotenvException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.Optional;
 
 /**
  * Gets environment dependent config key/values and returns to user
  */
 public final class ConfigLoader {
+    private static final Logger logger = LogManager.getLogger(ConfigLoader.class);
     private ConfigLoader() {}
 
     /**
