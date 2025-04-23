@@ -25,17 +25,4 @@ public final class ConfigLoader {
             .filename(envFile.getName())
             .load();
     }
-
-    /**
-     * Loads default (dev) dotenv config
-     */
-    public static Dotenv getDotEnv() throws DotenvException {
-        String defaultDotEnvPath = System.getProperty("user.dir") + "/env/.env.dev";
-        File envFile = new File(defaultDotEnvPath);
-
-        return Dotenv.configure()
-                .directory(envFile.getParent())
-                .filename(envFile.getName())
-                .load();
-    }
 }

@@ -21,10 +21,4 @@ public class ConfigLoaderTest {
         Dotenv testConfig = getDotEnv(validEnvPath);
         assertEquals(testConfig.get("TEST_KEY"), "1,2,3");
     }
-
-    @Test
-    void givenNoArgument_WhenEnvRetrieved_ThenDefaultEnvReturned() {
-        Dotenv defaultEnv = getDotEnv();
-        assertEquals(defaultEnv.get("ENV"), "DEV");
-    }
 }
