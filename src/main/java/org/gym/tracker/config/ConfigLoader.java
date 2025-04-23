@@ -6,7 +6,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.File;
-import java.util.Optional;
 
 /**
  * Gets environment dependent config key/values and returns to user
@@ -27,6 +26,9 @@ public final class ConfigLoader {
             .load();
     }
 
+    /**
+     * Loads default (dev) dotenv config
+     */
     public static Dotenv getDotEnv() throws DotenvException {
         String defaultDotEnvPath = System.getProperty("user.dir") + "/env/.env.dev";
         File envFile = new File(defaultDotEnvPath);
