@@ -10,7 +10,7 @@ name: Main Packaging
 
 on:
   push:
-    branches: ["main","github-actions-patch"]
+    branches: ["main"]
 
 jobs:
   build-and-package:
