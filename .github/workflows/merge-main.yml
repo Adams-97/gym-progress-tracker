@@ -33,11 +33,19 @@ jobs:
     - name: Build artifact
       run: mvn clean verify --file pom.xml
 
-    - name: Upload packaged artifacts
+    - name: Windows rename JAR
+      if: ${{ matrix.os  == 'windows-latest' }}
+      run: ./rename-jars.ps1 windows-latest
+
+    - name: Unix + macos rename JAR
+      if: ${{ matrix.os  != 'windows-latest' }}
+      run: for file in target/*.jar; do mv -vn $file target/"${{ matrix.os }}-`date '+%y%m%d_%H%M%S'`_`basename $file`"; done
+
+    - name: Copy renamed JARs to staging
       run: |
         mkdir staging
-        for file in target/*.jar; do mv -vn $file target/"${{ matrix.os }}-`date '+%y%m%d_%H%M%S'`_`basename $file`"; done
         cp target/*.jar staging
+
     - uses: actions/upload-artifact@v4
       with:
        name: Package
