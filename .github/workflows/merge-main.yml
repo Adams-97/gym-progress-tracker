@@ -6,15 +6,15 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
-name: Build and Test PR
+name: Main Packaging
 
 on:
-  pull_request:
+  push:
     branches: ["main"]
 
 jobs:
-  test-and-lint:
-    name: Run all tests and linting to see if can merge
+  build-and-package:
+    name: Do full mvn build and package artifacts
     strategy:
           matrix:
             os: [ubuntu-latest, windows-latest, macos-latest]
@@ -29,6 +29,21 @@ jobs:
         java-version: '21'
         distribution: 'temurin'
         cache: maven
-        
-    - name: Compile, test and lint build
-      run: mvn clean test --file pom.xml
+
+    - name: Build artifact
+      run: mvn clean verify --file pom.xml
+
+    - name: Get current date
+      run: echo "NOW=$(date '+%y%m%d_%H%M%S')" >> $GITHUB_ENV
+
+    - name: Copy renamed JARs to staging
+      run: |
+        mkdir staging
+        cp target/*.jar staging
+
+    - uses: actions/upload-artifact@v4
+      with:
+       name: ${{ env.NOW }}-binary-${{ matrix.os }}
+       path: staging
+       if-no-files-found: error
+       retention-days: 15
