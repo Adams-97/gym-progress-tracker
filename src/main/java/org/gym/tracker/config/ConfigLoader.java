@@ -15,14 +15,39 @@ public final class ConfigLoader {
     private ConfigLoader() {}
 
     /**
-     * Loads dotenv config from environment dependent env file
+     * Loads dotenv config from environment dependent env file.
      */
-    public static Dotenv getDotEnv(String dotEnvPath) throws DotenvException {
-        File envFile = new File(dotEnvPath);
+    public static Optional<Dotenv> getDotEnv(String dotEnvPath) {
+        try {
+            File envFile = new File(dotEnvPath);
 
-        return Dotenv.configure()
-            .directory(envFile.getParent())
-            .filename(envFile.getName())
-            .load();
+            if (!envFile.exists()) {
+                throw new FileNotFoundException(String.format("Can't find dotenv file: %s", dotEnvPath));
+            }
+            return Optional.of(Dotenv.configure()
+                    .directory(envFile.getParent())
+                    .filename(envFile.getName())
+                    .load());
+
+        } catch (DotenvException e) {
+            logger.warn("Dotenv Exception caught:\n", e);
+        } catch (FileNotFoundException e) {
+            logger.warn(e.getMessage());
+        }
+        return Optional.empty();
+    }
+
+    /**
+     * Loads a yaml file from resources directory.
+     * Throws FileNotFoundException if CONFIG_NAME is incorrect
+     */
+    public static YamlConfig getYamlConfig() throws FileNotFoundException {
+        InputStream inputStream = ConfigLoader.class.getResourceAsStream(CONFIG_NAME);
+        if (inputStream == null) {
+            throw new FileNotFoundException(String.format("Cannot find config file: %s", CONFIG_NAME));
+        }
+
+        logger.info("Yaml file {} loaded: ", CONFIG_NAME);
+        return new Yaml(new Constructor(YamlConfig.class, new LoaderOptions())).load(inputStream);
     }
 }
