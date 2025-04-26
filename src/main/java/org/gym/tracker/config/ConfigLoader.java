@@ -4,15 +4,26 @@ import io.github.cdimascio.dotenv.Dotenv;
 import io.github.cdimascio.dotenv.DotenvException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.yaml.snakeyaml.LoaderOptions;
+import org.yaml.snakeyaml.Yaml;
+import org.yaml.snakeyaml.constructor.Constructor;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.util.Optional;
 
 /**
  * Gets environment dependent config key/values and returns to user
  */
 public final class ConfigLoader {
     private static final Logger logger = LogManager.getLogger(ConfigLoader.class);
-    private ConfigLoader() {}
+    private static final String CONFIG_NAME = "/config.yml";
+    private static YamlConfig yamlConfig;
+
+    private ConfigLoader() throws FileNotFoundException {
+        yamlConfig = getYamlConfig();
+    }
 
     /**
      * Loads dotenv config from environment dependent env file.
@@ -50,4 +61,12 @@ public final class ConfigLoader {
         logger.info("Yaml file {} loaded: ", CONFIG_NAME);
         return new Yaml(new Constructor(YamlConfig.class, new LoaderOptions())).load(inputStream);
     }
+
+    /**
+     * Gets ExcelConfig from config yaml
+     */
+    public static ExcelConfig getExcelConfig() {
+        return yamlConfig.excelConfig();
+    }
+
 }

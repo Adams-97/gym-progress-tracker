@@ -1,0 +1,5 @@
+---
+Excel:
+  workbookName: "workout-log.xlsx"
+  logWorksheetIndex: "data"
+  logTableName: "workout-log"
