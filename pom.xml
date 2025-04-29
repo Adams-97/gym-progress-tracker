@@ -82,7 +82,7 @@
                 <artifactId>maven-checkstyle-plugin</artifactId>
                 <version>3.6.0</version>
                 <configuration>
-                    <configLocation>src/main/resources/checkstyle-config.xml</configLocation>
+                    <configLocation>config/checkstyle-config.xml</configLocation>
                 </configuration>
                 <executions>
                     <execution>
