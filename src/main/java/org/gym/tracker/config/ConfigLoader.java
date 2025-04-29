@@ -18,34 +18,26 @@ import java.util.Optional;
  */
 public final class ConfigLoader {
     private static final Logger logger = LogManager.getLogger(ConfigLoader.class);
-    private static final String CONFIG_NAME = "/config.yml";
+    private static Dotenv envVar;
+    private static final String DEV_DOT_ENV_PATH = "/env/.env.dev";
+    private static final String CONFIG_NAME = "/config/config.yml";
     private static YamlConfig yamlConfig;
 
-    private ConfigLoader() throws FileNotFoundException {
-        yamlConfig = getYamlConfig();
+    private ConfigLoader() {
+         envVar = getDotEnv();
     }
 
     /**
-     * Loads dotenv config from environment dependent env file.
+     * Loads dotenv config. If dev it looks for .env.dev, if not it'll just get env var
      */
-    public static Optional<Dotenv> getDotEnv(String dotEnvPath) {
-        try {
-            File envFile = new File(dotEnvPath);
+    public static Dotenv getDotEnv(String filePath) {
+        File envFile = new File(filePath);
 
-            if (!envFile.exists()) {
-                throw new FileNotFoundException(String.format("Can't find dotenv file: %s", dotEnvPath));
-            }
-            return Optional.of(Dotenv.configure()
-                    .directory(envFile.getParent())
-                    .filename(envFile.getName())
-                    .load());
-
-        } catch (DotenvException e) {
-            logger.warn("Dotenv Exception caught:\n", e);
-        } catch (FileNotFoundException e) {
-            logger.warn(e.getMessage());
-        }
-        return Optional.empty();
+        return Dotenv.configure()
+                .directory(envFile.getParent())
+                .filename(envFile.getName())
+                .ignoreIfMissing()
+                .load();
     }
 
     /**

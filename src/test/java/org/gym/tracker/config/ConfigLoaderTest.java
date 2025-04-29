@@ -11,16 +11,32 @@ import static org.junit.jupiter.api.Assertions.*;
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 public class ConfigLoaderTest {
 
-    @Test
-    void givenInvalidEnvPath_WhenEnvRetrieved_ThenDotEnvException() {
-        String invalidEnvPath = "/incorrect/path";
-        assertEquals(getDotEnv(invalidEnvPath), Optional.empty());
+    @Nested
+    class getDotEnv {
+        @Test
+        void givenInvalidEnvPath_WhenEnvRetrieved_ThenNoError() {
+            String invalidEnvPath = "/incorrect/path";
+            assertDoesNotThrow(() -> getDotEnv());
+            assertDoesNotThrow(() -> getDotEnv(invalidEnvPath));
+        }
+
+        @Test
+        void givenValidEnvPath_WhenEnvRetrieved_ThenEnvValAccess() {
+            String validEnvPath = System.getProperty("user.dir") + "/src/test/resources/.env.test";
+            Dotenv testConfig = getDotEnv(validEnvPath);
+            assertEquals("1,2,3", testConfig.get("TEST_KEY"));
+        }
     }
 
-    @Test
-    void givenValidEnvPath_WhenEnvRetrieved_ThenEnvValAccess() {
-        String validEnvPath = System.getProperty("user.dir") + "/src/test/resources/.env.test";
-        Optional<Dotenv> testConfig = getDotEnv(validEnvPath);
-        assertTrue(testConfig.isPresent());
-    }
+
+
+
+//    @Nested
+//    class getYamlConfig {
+//        @Test
+//        void sandpit() {
+//            Map<String, Object> input = new HashMap<>();
+//
+//        }
+//    }
 }
