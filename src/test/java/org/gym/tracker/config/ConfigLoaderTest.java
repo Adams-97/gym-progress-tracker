@@ -10,7 +10,6 @@ import java.net.URISyntaxException;
 import java.net.URL;
 
 import static org.gym.tracker.config.ConfigLoader.*;
-import static org.gym.tracker.config.YamlConfig.WORKBOOK_NAME;
 import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
@@ -44,14 +43,20 @@ public class ConfigLoaderTest {
     @Nested
     class getYamlConfig {
         @Test
-        void sandpit() throws FileNotFoundException {
+        void givenYamlConfig_WhenYamlParsed_ThenValuesRetrieved() throws FileNotFoundException {
             String validYamlConfPath = "/config.yml";
             URL testEnvPath = ConfigLoaderTest.class.getResource(validYamlConfPath);
             logger.info("Checking if valid path: {}", validYamlConfPath);
             assertNotNull(testEnvPath);
 
             YamlConfig yaml = getYamlConfig(validYamlConfPath);
-            assertEquals("workout-log.xlsx", yaml.excelConfig.get(WORKBOOK_NAME));
+            assertEquals("test-value", yaml.excelConfig.get("testKey"));
+        }
+
+        @Test
+        void givenInvalidYamlConfig_WhenYamlParsed_ThenFileNotFound() throws FileNotFoundException {
+            String invalidYamlConfPath = "/incorrect.yml";
+            assertThrows(FileNotFoundException.class, () -> getYamlConfig(invalidYamlConfPath));
         }
     }
 }

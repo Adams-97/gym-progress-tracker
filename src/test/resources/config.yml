@@ -1,5 +1,3 @@
 ---
 excelConfig:
-  workbookName: "workout-log.xlsx"
-  logWorksheetName: "data"
-  logTableName: "workout-log"
+  testKey: "test-value"
