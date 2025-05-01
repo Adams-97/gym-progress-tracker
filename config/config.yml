@@ -1,0 +1,5 @@
+---
+excelConfig:
+  workbookName: "workout-log.xlsx"
+  logWorksheetName: "data"
+  logTableName: "workout-log"
