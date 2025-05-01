@@ -1,5 +1,6 @@
 ---
 excelConfig:
+  workbookPath: "config/workout-log.xlsx"
   workbookName: "workout-log.xlsx"
   logWorksheetName: "data"
   logTableName: "workout-log"
