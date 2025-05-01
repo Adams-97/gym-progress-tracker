@@ -5,7 +5,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.gym.tracker.config.ConfigLoader;
 import org.gym.tracker.config.YamlConfig;
-import org.gym.tracker.db.GymEvent;
+//import org.gym.tracker.db.GymEvent;
 
 import java.io.*;
 import java.util.List;
@@ -39,7 +39,7 @@ public class Jobs {
         Map<String, String> readExcelConf = yaml.excelConfig;
         File excel = new File(readExcelConf.get(WORKBOOK_PATH));
 
-        List<GymEvent> parsedExcel;
+//        List<GymEvent> parsedExcel;
         try(InputStream excelInput = new FileInputStream(excel)) {
 
             // Insert logic here to parse data and reassign it to parsedExcel
