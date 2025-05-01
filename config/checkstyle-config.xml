@@ -43,8 +43,8 @@
     </module>
 
     <module name="SuppressionSingleFilter">
-        <property name="checks" value="MethodName|MissingJavadocMethod"/>
-<!--        <property name="files" value="GymApp.java"/>-->
+        <property name="checks" value="MethodName"/>
+        <property name="files" value="GymApp.java"/>
     </module>
 
 </module>

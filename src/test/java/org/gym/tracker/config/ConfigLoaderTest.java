@@ -5,7 +5,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.*;
 
-import java.io.FileNotFoundException;
+import java.io.*;
 import java.net.URISyntaxException;
 import java.net.URL;
 
@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 public class ConfigLoaderTest {
 
-    private static final Logger logger = LogManager.getLogger(ConfigLoader.class);
+    private static final Logger logger = LogManager.getLogger(ConfigLoaderTest.class);
 
     @Nested
     class getDotEnv {
@@ -43,18 +43,17 @@ public class ConfigLoaderTest {
     @Nested
     class getYamlConfig {
         @Test
-        void givenYamlConfig_WhenYamlParsed_ThenValuesRetrieved() throws FileNotFoundException {
+        void givenYamlConfig_WhenYamlParsed_ThenValuesRetrieved() throws IOException {
             String validYamlConfPath = "/config.yml";
-            URL testEnvPath = ConfigLoaderTest.class.getResource(validYamlConfPath);
-            logger.info("Checking if valid path: {}", validYamlConfPath);
-            assertNotNull(testEnvPath);
+            URL yamlResource = ConfigLoaderTest.class.getResource(validYamlConfPath);
 
-            YamlConfig yaml = getYamlConfig(validYamlConfPath);
+            assert yamlResource != null;
+            YamlConfig yaml = getYamlConfig(yamlResource.getPath());
             assertEquals("test-value", yaml.excelConfig.get("testKey"));
         }
 
         @Test
-        void givenInvalidYamlConfig_WhenYamlParsed_ThenFileNotFound() throws FileNotFoundException {
+        void givenInvalidYamlConfig_WhenYamlParsed_ThenFileNotFound() {
             String invalidYamlConfPath = "/incorrect.yml";
             assertThrows(FileNotFoundException.class, () -> getYamlConfig(invalidYamlConfPath));
         }

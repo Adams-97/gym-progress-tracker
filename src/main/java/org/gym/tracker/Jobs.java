@@ -5,7 +5,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.gym.tracker.config.ConfigLoader;
 import org.gym.tracker.config.YamlConfig;
-import org.gym.tracker.db.ExcelStore;
 import org.gym.tracker.db.GymEvent;
 
 import java.io.*;
@@ -23,19 +22,14 @@ public class Jobs {
     public static Dotenv envVar;
     public static YamlConfig yaml;
 
-    Jobs() throws FileNotFoundException {
+    Jobs() throws IOException {
         if (!Boolean.parseBoolean(System.getenv("DEFAULT_ENV"))) {
             envVar = ConfigLoader.getDotEnv(System.getenv("DOTENV_PATH"));
         } else envVar = ConfigLoader.getDotEnv();
 
-        try {
-            if (!Boolean.parseBoolean(envVar.get("DEFAULT_CONF"))) {
-                yaml = ConfigLoader.getYamlConfig(envVar.get("CONFIG_LOCATION"));
-            } else yaml = ConfigLoader.getYamlConfig();
-        } catch (FileNotFoundException e) {
-            logger.error("Cannot find yaml config file at initialisation");
-            throw e;
-        }
+        if (!Boolean.parseBoolean(envVar.get("DEFAULT_CONF"))) {
+            yaml = ConfigLoader.getYamlConfig(envVar.get("CONFIG_LOCATION"));
+        } else yaml = ConfigLoader.getYamlConfig();
     }
 
     /**
@@ -57,11 +51,17 @@ public class Jobs {
         // Once data is retrieved then store somewhere
     }
 
+    /**
+     * Calculates next lot of exercises and writes to db
+     */
     public static void calcExercises() {
         // ????
     }
 
-    public static void export() {
+    /**
+     * Exports data from db
+     */
+    public static void exportData() {
         // ????
     }
 
