@@ -4,3 +4,11 @@ nestedTest:
   nestedTest1: "test-value2"
   nestedTest2:
     nestedValue: [1,2,3]
+excelConfig:
+  testKey: "test-value"
+  testWorkbookPath: "/ExcelStoreTest.xlsx"
+  testWorkbookName: "ExcelStoreTest.xlsx"
+  validTableWorksheet: "DataTest1"
+  validTableName: "TestTable1"
+  invalidTablesWorksheet: "DataTest2"
+  invalidTablesName: "TestTable2"
