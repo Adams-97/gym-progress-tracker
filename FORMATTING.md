@@ -1,6 +1,6 @@
 # Code Formatting
 The below rules are the main coding styles implemented in this repo. Checkstyle
-will enforce these at **test-compile** time in Github Action when PR with main is made:
+will enforce these at **test-compile** time in GitHub Action when PR with main is made:
 
 - Max line length of 120 characters
 
