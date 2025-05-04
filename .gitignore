@@ -1,5 +1,6 @@
 env/.env.dev
 GymApp.log
+*.db
 
 target/
 !.mvn/wrapper/maven-wrapper.jar

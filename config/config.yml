@@ -4,3 +4,6 @@ excelConfig:
   workbookName: "workout-log.xlsx"
   logWorksheetName: "data"
   logTableName: "workout-log"
+db:
+  sqlLite:
+    filePath: "local.db"
