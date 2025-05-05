@@ -55,6 +55,30 @@ public final class ConfigLoader {
     }
 
     /**
+     * Parses and flattens any nesting in snakeYAML output. Example:
+     * key1:
+     *  key11: "val11"
+     * becomes "key1.key11" -> "val11"
+     */
+    public static Map<String, Object> flattenConf(Map<?, ?> config, String separator, String prefix) {
+        Map<String, Object> out = new HashMap<>();
+        String adjustedSep;
+
+        if (Objects.equals(prefix, "")) {
+            adjustedSep = "";
+        } else adjustedSep = separator;
+
+        for (Map.Entry<?, ?> entry : config.entrySet()) {
+            if (entry.getValue() instanceof Map<?, ?>) {
+                out.putAll(flattenConf((Map<?, ?>) entry.getValue(), separator, prefix + adjustedSep + entry.getKey()));
+            } else {
+                out.put(prefix + adjustedSep + entry.getKey(), entry.getValue());
+                }
+            }
+        return out;
+    }
+
+    /**
      * Loads a yaml file from path.
      * Throws FileNotFoundException if yamlPath doesn't point to a valid file
      */
