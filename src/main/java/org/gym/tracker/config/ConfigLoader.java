@@ -8,6 +8,9 @@ import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
 
 import java.io.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
 /**
  * Gets environment dependent config key/values and returns to user
@@ -38,16 +41,16 @@ public final class ConfigLoader {
     public static Dotenv getDotEnv() {return getDotEnv(DEV_DOT_ENV_PATH);}
 
     /**
-     * Loads a yaml file from path.
+     * Loads and flattens a yaml file from file path.
      * Throws FileNotFoundException if yamlPath doesn't point to a valid file
      */
-    public static YamlConfig getYamlConfig(String yamlPath) throws IOException {
+    public static Map<String, Object> getYamlConfig(String yamlPath) throws IOException {
         logger.debug("Searching for {}", yamlPath);
 
         try(FileInputStream yamlFile = new FileInputStream(yamlPath)) {
-            Constructor constructor = new Constructor(YamlConfig.class, new LoaderOptions());
             logger.info("Yaml file {} loaded: ", yamlPath);
-            return new Yaml(constructor).load(yamlFile);
+            return flattenConf(new Yaml().load(yamlFile), ".", "");
+
         } catch (FileNotFoundException e) {
             logger.error("Can't find yaml {}", yamlPath);
             throw e;
@@ -82,5 +85,5 @@ public final class ConfigLoader {
      * Loads a yaml file from path.
      * Throws FileNotFoundException if yamlPath doesn't point to a valid file
      */
-    public static YamlConfig getYamlConfig() throws IOException {return getYamlConfig(DEFAULT_CONFIG_PATH);}
+    public static Map<String, Object> getYamlConfig() throws IOException {return getYamlConfig(DEFAULT_CONFIG_PATH);}
 }
