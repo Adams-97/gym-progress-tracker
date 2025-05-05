@@ -1,3 +1,6 @@
 ---
-excelConfig:
-  testKey: "test-value"
+testKey: "test-value"
+nestedTest:
+  nestedTest1: "test-value2"
+  nestedTest2:
+    nestedValue: [1,2,3]

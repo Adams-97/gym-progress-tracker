@@ -23,7 +23,7 @@ public class Jobs {
      * This reads data from the gym excel event log and persists in db
      */
     public static void readExcel() throws IOException {
-        File excel = new File(String.valueOf(gymAppConfig.get(WORKBOOK_PATH)));
+        File excel = new File(String.valueOf(gymAppConfig.getValue(WORKBOOK_PATH)));
 
 //        List<GymEvent> parsedExcel;
         try(InputStream excelInput = new FileInputStream(excel)) {

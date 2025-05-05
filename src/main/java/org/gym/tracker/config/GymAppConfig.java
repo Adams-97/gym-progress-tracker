@@ -14,6 +14,9 @@ public class GymAppConfig {
     private final Dotenv envVar;
     private final Map<String, Object> yaml;
 
+    /**
+     * Gets env var via dotenv if available and then searches for yaml
+     */
     public GymAppConfig() throws IOException {
         if (!Boolean.parseBoolean(System.getenv("DEFAULT_ENV"))) {
             envVar = ConfigLoader.getDotEnv(System.getenv("DOTENV_PATH"));
@@ -37,7 +40,7 @@ public class GymAppConfig {
     /**
      * Searches config for key but throws error if value cannot be found
      */
-    public Object get(String key) {
+    public Object getValue(String key) {
         Optional<Object> searchResult = searchConfigs(key);
         try {
             return searchResult.orElseThrow();
@@ -51,5 +54,5 @@ public class GymAppConfig {
     /**
      * Searches config for key but does not throw error if not found
      */
-    public Optional<Object> safeGet(String key) {return searchConfigs(key);}
+    public Optional<Object> safeGetValue(String key) {return searchConfigs(key);}
 }
