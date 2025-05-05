@@ -14,8 +14,6 @@ import java.io.InputStream;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -25,25 +23,23 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class ExcelStoreTest {
 
     private static final Logger logger = LogManager.getLogger(ExcelStoreTest.class);
-    private static Map<String, String> excelConf;
+    private static Map<String, Object> excelConf;
 
     @BeforeAll
     static void setUpConf() throws IOException {
-        String configLocation = "config.yml";
-        URL configURL = ExcelStoreTest.class.getResource(configLocation);
+        URL configURL = ExcelStoreTest.class.getResource("config.yml");
         assert configURL != null;
-
-        excelConf = ConfigLoader.getYamlConfig(configURL.getPath()).excelConfig;
+        excelConf = ConfigLoader.getYamlConfig(configURL.getPath());
     }
 
     @Test
     void givenAValidExcel_WhenTableIsParsed_GymRecordsRetrieved() {
         ExcelStore excelStore = new ExcelStore();
-        InputStream excel = ExcelStoreTest.class.getResourceAsStream(excelConf.get("testWorkbookPath"));
+        InputStream excel = ExcelStoreTest.class.getResourceAsStream((String) excelConf.get("testWorkbookPath"));
         assert excel != null;
 
         AreaReference tableArea = excelStore.getTableAreaReference(
-                excel, excelConf.get("validTableWorksheet"), excelConf.get("validTableName")
+                excel, (String) excelConf.get("validTableWorksheet"), (String) excelConf.get("validTableName")
         );
         List<Integer> rows = excelStore.getRowIndexes(tableArea);
         List<Integer> cols = excelStore.getColIndexes(tableArea);
