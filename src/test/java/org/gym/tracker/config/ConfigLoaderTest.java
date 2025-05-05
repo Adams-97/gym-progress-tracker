@@ -8,6 +8,9 @@ import org.junit.jupiter.api.*;
 import java.io.*;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.gym.tracker.config.ConfigLoader.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -48,8 +51,15 @@ public class ConfigLoaderTest {
             URL yamlResource = ConfigLoaderTest.class.getResource(validYamlConfPath);
 
             assert yamlResource != null;
-            YamlConfig yaml = getYamlConfig(yamlResource.getPath());
-            assertEquals("test-value", yaml.excelConfig.get("testKey"));
+            Map<String, Object> yaml = getYamlConfig(yamlResource.getPath());
+            assertEquals("test-value", yaml.get("testKey"));
+            assertEquals("test-value2", yaml.get("nestedTest.nestedTest1"));
+
+            var nestedTest3 = new ArrayList<>();
+            nestedTest3.add(1);
+            nestedTest3.add(2);
+            nestedTest3.add(3);
+            assertEquals(nestedTest3, yaml.get("nestedTest.nestedTest2.nestedValue"));
         }
 
         @Test
