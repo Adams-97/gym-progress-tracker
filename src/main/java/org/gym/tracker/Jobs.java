@@ -5,13 +5,13 @@ import org.apache.logging.log4j.Logger;
 import org.gym.tracker.config.GymAppConfig;
 import org.gym.tracker.db.IDataBase;
 import org.gym.tracker.db.DataBaseFactory;
-import org.gym.tracker.db.GymRecord;
 
 import java.io.*;
 import java.sql.SQLException;
 import java.util.List;
 
 import static org.gym.tracker.config.ConfigKeys.*;
+import static org.gym.tracker.db.sqlStatements.gymRecordInsertStmnt;
 
 /**
  * Dictates the flow of each job
@@ -43,10 +43,10 @@ public class Jobs {
 
         String dbType = String.valueOf(gymAppConfig.getValue(DB_TYPE));
         String dbUrl = String.valueOf(gymAppConfig.getValue(DB_URL));
-        String gymRecordTable = String.valueOf(gymAppConfig.getValue(GYM_RECORD_TABLE));
+        String gymRecordTable = String.valueOf(gymRecordInsertStmnt);
 
         // Once data is retrieved then store somewhere
-        IDataBase db = DataBaseFactory.getDataBase(dbType, dbUrl);
+        IDataBase db = DataBaseFactory.getDataBase(dbType, dbUrl, gymAppConfig);
         db.insertGymRecords(excelData, gymRecordTable);
     }
 

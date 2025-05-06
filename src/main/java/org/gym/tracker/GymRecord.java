@@ -1,4 +1,4 @@
-package org.gym.tracker.db;
+package org.gym.tracker;
 
 import java.time.LocalDate;
 import java.time.LocalTime;

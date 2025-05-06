@@ -2,9 +2,14 @@ package org.gym.tracker.db;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.gym.tracker.GymRecord;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public interface IDataBase {
 
@@ -18,13 +23,11 @@ public interface IDataBase {
     /**
      * Insert gym records that have been parsed from Excel. Returns number of inserted rows
      */
-    default int insertGymRecords(List<GymRecord> rows, String tableName) throws SQLException {
-        int numInserts = 0;
-
+    default void insertGymRecords(List<GymRecord> rows, String insertQuery) throws SQLException {
         try(Connection conn = getConn()) {
             conn.setAutoCommit(false);
 
-            PreparedStatement stmnt = conn.prepareStatement(sqlStatements.gymRecordInsertStmnt);
+            PreparedStatement stmnt = conn.prepareStatement(insertQuery);
             for (GymRecord record : rows) {
                 stmnt.setString(1, record.exercise());
                 stmnt.setInt(2, record.setNumber());
@@ -33,12 +36,41 @@ public interface IDataBase {
                 stmnt.setTime(5, Time.valueOf(record.time()));
                 stmnt.setInt(5, record.mesocycle());
                 stmnt.setInt(5, record.programWeekNo());
-                numInserts += stmnt.executeUpdate();
+                stmnt.executeUpdate();
             }
             conn.commit();
-            return numInserts;
         } catch (SQLException e) {
             logger.error("Failed in insertion of gym records. Rolling back transaction");
+            throw e;
+        }
+    }
+
+     default void initialiseDb(String sqlFile) throws SQLException, FileNotFoundException {
+        List<String> sqlQueries = readSqlScript(sqlFile);
+
+        // getConn will initialise the sqlite db file
+        try(Connection conn = getConn()) {
+            conn.setAutoCommit(false);
+
+            for (String sqlQuery : sqlQueries) {
+                Statement stmnt = conn.createStatement();
+                stmnt.executeUpdate(sqlQuery);
+            }
+        }
+    }
+
+    private List<String> readSqlScript(String filePath) throws FileNotFoundException {
+        List<String> sqlQueries = new ArrayList<>();
+
+        try(Scanner sqlFile = new Scanner(new FileInputStream(filePath))) {
+            sqlFile.useDelimiter(";");
+            while (sqlFile.hasNext()) {
+                sqlQueries.add(sqlFile.next());
+            }
+            return sqlQueries;
+
+        } catch (FileNotFoundException e) {
+            logger.error("Cannot find setup sql script: {}", filePath);
             throw e;
         }
     }
