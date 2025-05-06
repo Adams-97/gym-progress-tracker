@@ -1,12 +1,13 @@
-package org.gym.tracker.db;
+package org.gym.tracker.spreadsheet;
 
 import org.apache.poi.ss.util.AreaReference;
+import org.gym.tracker.GymRecord;
 
 import java.io.InputStream;
 import java.util.List;
 import java.util.stream.Collectors;
 
-interface ExcelInterface {
+interface ISpreadsheet {
 
     /**
      * Use the input stream and other parameters to get an AreaReference from target table

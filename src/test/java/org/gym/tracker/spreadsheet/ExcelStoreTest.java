@@ -1,8 +1,9 @@
-package org.gym.tracker.db;
+package org.gym.tracker.spreadsheet;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.poi.ss.util.AreaReference;
+import org.gym.tracker.GymRecord;
 import org.gym.tracker.config.ConfigLoader;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayNameGeneration;
@@ -14,8 +15,6 @@ import java.io.InputStream;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 

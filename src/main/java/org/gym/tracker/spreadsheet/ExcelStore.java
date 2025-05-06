@@ -1,11 +1,13 @@
-package org.gym.tracker.db;
+package org.gym.tracker.spreadsheet;
 
 import org.apache.poi.ss.util.AreaReference;
+import org.gym.tracker.db.ExcelInterface;
+import org.gym.tracker.GymRecord;
 
 import java.io.InputStream;
 import java.util.List;
 
-public class ExcelStore implements ExcelInterface {
+public class ExcelStore implements ISpreadsheet {
 
     @Override
     public AreaReference getTableAreaReference(InputStream excelFile, String sheetName, String tableName) {
@@ -34,6 +36,6 @@ public class ExcelStore implements ExcelInterface {
 
     @Override
     public List<Integer> writeLinesOfGymData(List<GymRecord> rows) {
-        return ExcelInterface.super.writeLinesOfGymData(rows);
+        return ISpreadsheet.super.writeLinesOfGymData(rows);
     }
 }
