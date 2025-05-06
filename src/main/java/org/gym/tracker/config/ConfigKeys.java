@@ -12,4 +12,6 @@ public class ConfigKeys {
     public static final String DB_TYPE = "db.dbType";
     public static final String DB_URL = "db.url";
     public static final String GYM_RECORD_TABLE = "db.gymRecordTable";
+    public static final String SETUP_SQL_SCRIPT = "db.setupSqlScript";
+
 }
