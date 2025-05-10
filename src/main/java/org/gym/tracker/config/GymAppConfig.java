@@ -17,7 +17,7 @@ public class GymAppConfig {
     /**
      * Gets env var via dotenv if available and then searches for yaml
      */
-    public GymAppConfig() throws IOException {
+    public GymAppConfig() {
         if (!Boolean.parseBoolean(System.getenv("DEFAULT_ENV"))) {
             envVar = ConfigLoader.getDotEnv(System.getenv("DOTENV_PATH"));
         } else envVar = ConfigLoader.getDotEnv();
