@@ -1,7 +1,6 @@
 package org.gym.tracker.spreadsheet;
 
 import org.apache.poi.ss.util.AreaReference;
-import org.gym.tracker.db.ExcelInterface;
 import org.gym.tracker.GymRecord;
 
 import java.io.InputStream;

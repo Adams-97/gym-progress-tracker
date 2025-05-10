@@ -7,11 +7,13 @@ import org.gym.tracker.db.IDataBase;
 import org.gym.tracker.db.DataBaseFactory;
 
 import java.io.*;
-import java.sql.SQLException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 import static org.gym.tracker.config.ConfigKeys.*;
-import static org.gym.tracker.db.sqlStatements.gymRecordInsertStmnt;
+import static org.gym.tracker.db.sqlStatements.getGymRecordInsertSql;
 
 /**
  * Dictates the flow of each job
@@ -22,32 +24,30 @@ public class Jobs {
 
     private static GymAppConfig gymAppConfig;
 
-    Jobs() throws IOException {gymAppConfig = new GymAppConfig();}
+    Jobs() {gymAppConfig = new GymAppConfig();}
 
     /**
      * This reads data from the gym excel event log and persists in db
      */
-    public static void readExcel() throws IOException, SQLException {
-        File excel = new File(String.valueOf(gymAppConfig.getValue(WORKBOOK_PATH)));
+    public static void readExcel() {
+        Path excel = Paths.get(String.valueOf(gymAppConfig.getValue(WORKBOOK_PATH)));
         List<GymRecord> excelData = null;
 
-        try(InputStream excelInput = new FileInputStream(excel)) {
-
+        try(InputStream excelInput = Files.newInputStream(excel)) {
             // Insert logic here to parse data and reassign it to parsedExcel
+
+
+            logger.info("Successfully retrieved GymRecords from excel");
+
+            // Once data is retrieved then store somewhere
+            String gymLogInsertQuery = getGymRecordInsertSql((String) gymAppConfig.getValue(GYM_RECORD_TABLE));
+            IDataBase db = DataBaseFactory.getDataBase(gymAppConfig);
+            db.insertGymRecords(excelData, gymLogInsertQuery);
+
         } catch (IOException e) {
-            logger.error("Could not read excel {} successfully", excel.getAbsolutePath());
-            throw e;
+            logger.error("Could not read excel {} successfully", excel);
+            throw new RuntimeException(e);
         }
-
-        logger.info("Successfully retrieved GymRecords from excel");
-
-        String dbType = String.valueOf(gymAppConfig.getValue(DB_TYPE));
-        String dbUrl = String.valueOf(gymAppConfig.getValue(DB_URL));
-        String gymRecordTable = String.valueOf(gymRecordInsertStmnt);
-
-        // Once data is retrieved then store somewhere
-        IDataBase db = DataBaseFactory.getDataBase(dbType, dbUrl, gymAppConfig);
-        db.insertGymRecords(excelData, gymRecordTable);
     }
 
     /**
