@@ -46,7 +46,7 @@ public class ConfigLoaderTest {
     @Nested
     class getYamlConfig {
         @Test
-        void givenYamlConfig_WhenYamlParsed_ThenValuesRetrieved() throws IOException {
+        void givenYamlConfig_WhenYamlParsed_ThenValuesRetrieved() {
             String validYamlConfPath = "/config.yml";
             URL yamlResource = ConfigLoaderTest.class.getResource(validYamlConfPath);
 
@@ -65,7 +65,7 @@ public class ConfigLoaderTest {
         @Test
         void givenInvalidYamlConfig_WhenYamlParsed_ThenFileNotFound() {
             String invalidYamlConfPath = "/incorrect.yml";
-            assertThrows(FileNotFoundException.class, () -> getYamlConfig(invalidYamlConfPath));
+            assertThrows(RuntimeException.class, () -> getYamlConfig(invalidYamlConfPath));
         }
     }
 }

@@ -44,7 +44,7 @@ public final class ConfigLoader {
      * Loads and flattens a yaml file from file path.
      * Throws FileNotFoundException if yamlPath doesn't point to a valid file
      */
-    public static Map<String, Object> getYamlConfig(String yamlPath) throws IOException {
+    public static Map<String, Object> getYamlConfig(String yamlPath) {
         logger.debug("Searching for {}", yamlPath);
 
         try(FileInputStream yamlFile = new FileInputStream(yamlPath)) {
@@ -53,7 +53,9 @@ public final class ConfigLoader {
 
         } catch (FileNotFoundException e) {
             logger.error("Can't find yaml {}", yamlPath);
-            throw e;
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -85,5 +87,5 @@ public final class ConfigLoader {
      * Loads a yaml file from path.
      * Throws FileNotFoundException if yamlPath doesn't point to a valid file
      */
-    public static Map<String, Object> getYamlConfig() throws IOException {return getYamlConfig(DEFAULT_CONFIG_PATH);}
+    public static Map<String, Object> getYamlConfig() {return getYamlConfig(DEFAULT_CONFIG_PATH);}
 }
