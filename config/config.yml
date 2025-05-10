@@ -4,3 +4,8 @@ excelConfig:
   workbookName: "workout-log.xlsx"
   logWorksheetName: "data"
   logTableName: "workout-log"
+db:
+  dbType: "sqlite"
+  url: "jdbc:sqlite:local_dev.db"
+  gymRecordTable: "GYM_LOG"
+  setupSqlScript: "scripts/setup_database.sql"

@@ -4,6 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 public class GymApp {
     private static final Logger logger = LogManager.getLogger(GymApp.class);
@@ -12,7 +13,7 @@ public class GymApp {
      * Main entrypoint for application. Action application takes depends on first argument
      * @param args - Should be one of "read-excel", "calc-exercises", "export"
      */
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         final String READ_EXCEL = "read-excel";
         final String CALC_EXERCISES = "calc-exercises";
         final String EXPORT = "export";
